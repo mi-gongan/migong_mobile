@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import 'package:webview_flutter/webview_flutter.dart';
 
 class CustomWebView extends StatelessWidget {
-  final homeUrl = "https://migong.vercel.app/";
+  final homeUrl = "http://localhost:3000";
   final WebViewCreatedCallback? onWebViewCreated;
 
   const CustomWebView({required this.onWebViewCreated, super.key});

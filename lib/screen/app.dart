@@ -37,6 +37,11 @@ class _AppState extends State<App> {
   }
 
   void _onItemTapped(int index) {
+    if (index == 0) {
+      controller?.loadUrl('http://localhost:3000/');
+    } else if (index == 1) {
+      controller?.loadUrl('http://localhost:3000/video');
+    }
     setState(() {
       _selectedIndex = index;
     });
