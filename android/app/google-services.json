@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1063526528034",
+    "project_id": "migong-42daa",
+    "storage_bucket": "migong-42daa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1063526528034:android:07d96005fd70e5ec61467b",
+        "android_client_info": {
+          "package_name": "com.example.migong"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1063526528034-tuv3m3sjtqi64i0cng937rlo5lqfncsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfk76vI_4mqRnCkTldbSb1OpL4RlOGPMA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1063526528034-tuv3m3sjtqi64i0cng937rlo5lqfncsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

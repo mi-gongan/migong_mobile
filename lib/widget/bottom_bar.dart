@@ -15,7 +15,7 @@ class _BottomBarState extends State<BottomBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 100.0,
+      height: 120.0,
       child: BottomNavigationBar(
         backgroundColor: Colors.black,
         items: const [

@@ -18,24 +18,22 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-          appBar: AppBar(
-            title: const Text('migong'),
-            backgroundColor: Colors.black,
-            toolbarHeight: 80.0,
-          ),
-          body: Stack(
-            children: <Widget>[
-              CustomWebView(onWebViewCreated: _webViewControllerManage),
-              MyPage(showState: (_selectedIndex != 2))
-            ],
-          ),
-          bottomNavigationBar: BottomBar(
-            onTap: _onItemTapped,
-            selectedIndex: _selectedIndex,
-          )),
-    );
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('migong'),
+          backgroundColor: Colors.black,
+          // toolbarHeight: 80.0,
+        ),
+        body: Stack(
+          children: <Widget>[
+            CustomWebView(onWebViewCreated: _webViewControllerManage),
+            MyPage(showState: (_selectedIndex != 2))
+          ],
+        ),
+        bottomNavigationBar: BottomBar(
+          onTap: _onItemTapped,
+          selectedIndex: _selectedIndex,
+        ));
   }
 
   void _onItemTapped(int index) {
