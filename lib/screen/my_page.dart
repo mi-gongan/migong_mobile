@@ -10,17 +10,24 @@ class MyPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Offstage(
       offstage: showState,
-      child: Container(
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            ElevatedButton(onPressed: kakaoLogin, child: Text('kakaologin')),
-            ElevatedButton(onPressed: kakaoLogout, child: Text('kakaologout')),
-            ElevatedButton(onPressed: kakaoExit, child: Text('exit')),
-            ElevatedButton(onPressed: userInfo, child: Text('userinfo')),
-            ElevatedButton(onPressed: checkToken, child: Text('check')),
-          ],
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                ElevatedButton(
+                    onPressed: kakaoLogin, child: Text('kakaologin')),
+                ElevatedButton(
+                    onPressed: kakaoLogout, child: Text('kakaologout')),
+                ElevatedButton(onPressed: kakaoExit, child: Text('exit')),
+                ElevatedButton(onPressed: userInfo, child: Text('userinfo')),
+                ElevatedButton(onPressed: checkToken, child: Text('check')),
+              ],
+            ),
+          ),
         ),
       ),
     );

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:migong/screen/custom_splash.dart';
 import 'package:migong/screen/custom_webview.dart';
 import 'package:migong/screen/my_page.dart';
 import 'package:migong/widget/bottom_bar.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class App extends StatefulWidget {
-  const App({super.key});
+  bool firstSplash = false;
+  App({super.key});
 
   @override
   State<App> createState() => _AppState();
@@ -15,36 +17,44 @@ class _AppState extends State<App> {
   WebViewController? controller;
 
   int _selectedIndex = 0;
+  int process = 0;
+  bool secondSplash = false;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text('migong'),
-          backgroundColor: Colors.black,
-          // toolbarHeight: 80.0,
+    return Container(
+      color: Colors.black,
+      child: SafeArea(
+        child: Scaffold(
+          body: Stack(
+            children: <Widget>[
+              CustomSplash(showState: widget.firstSplash),
+              CustomWebView(
+                onWebViewCreated: _webViewControllerManage,
+                setProcess: _setProcess,
+              ),
+              MyPage(showState: (_selectedIndex != 2)),
+              CustomSplash(showState: secondSplash),
+            ],
+          ),
         ),
-        body: Stack(
-          children: <Widget>[
-            CustomWebView(onWebViewCreated: _webViewControllerManage),
-            MyPage(showState: (_selectedIndex != 2))
-          ],
-        ),
-        bottomNavigationBar: BottomBar(
-          onTap: _onItemTapped,
-          selectedIndex: _selectedIndex,
-        ));
+      ),
+    );
   }
 
-  void _onItemTapped(int index) {
-    if (index == 0) {
-      controller?.loadUrl('http://localhost:3000/');
-    } else if (index == 1) {
-      controller?.loadUrl('http://localhost:3000/video');
-    }
+  void _setProcess(int process) {
     setState(() {
-      _selectedIndex = index;
+      process = process;
     });
+    if (process == 100) {
+      Future.delayed(
+          Duration(seconds: 1),
+          () => {
+                setState(() {
+                  secondSplash = true;
+                })
+              });
+    }
   }
 
   void _webViewControllerManage(WebViewController controller) {
