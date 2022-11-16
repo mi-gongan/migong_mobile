@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:migong/screen/custom_splash.dart';
 import 'package:migong/screen/custom_webview.dart';
-import 'package:migong/screen/my_page.dart';
-import 'package:migong/widget/bottom_bar.dart';
+import 'package:migong/screen/login_screen.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class App extends StatefulWidget {
-  bool firstSplash = false;
+  bool splashOff = false;
+  final baseUrl = "http://localhost:3000";
   App({super.key});
 
   @override
@@ -14,11 +14,9 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  WebViewController? controller;
-
-  int _selectedIndex = 0;
-  int process = 0;
-  bool secondSplash = false;
+  WebViewController? webViewController;
+  bool loginScreenOff = false;
+  final cookieManager = CookieManager();
 
   @override
   Widget build(BuildContext context) {
@@ -28,13 +26,15 @@ class _AppState extends State<App> {
         child: Scaffold(
           body: Stack(
             children: <Widget>[
-              CustomSplash(showState: widget.firstSplash),
+              CustomSplash(offstage: widget.splashOff),
               CustomWebView(
-                onWebViewCreated: _webViewControllerManage,
-                setProcess: _setProcess,
-              ),
-              MyPage(showState: (_selectedIndex != 2)),
-              CustomSplash(showState: secondSplash),
+                  onWebViewCreated: _webViewControllerManage,
+                  baseUrl: widget.baseUrl),
+              LoginScreen(
+                  webViewController: webViewController,
+                  cookieManager: cookieManager,
+                  offstage: loginScreenOff,
+                  baseUrl: widget.baseUrl),
             ],
           ),
         ),
@@ -42,22 +42,7 @@ class _AppState extends State<App> {
     );
   }
 
-  void _setProcess(int process) {
-    setState(() {
-      process = process;
-    });
-    if (process == 100) {
-      Future.delayed(
-          Duration(seconds: 1),
-          () => {
-                setState(() {
-                  secondSplash = true;
-                })
-              });
-    }
-  }
-
   void _webViewControllerManage(WebViewController controller) {
-    this.controller = controller;
+    this.webViewController = controller;
   }
 }

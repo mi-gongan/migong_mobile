@@ -1,13 +1,13 @@
 import "package:flutter/material.dart";
 
 class CustomSplash extends StatelessWidget {
-  final bool showState;
-  const CustomSplash({required this.showState, super.key});
+  final bool offstage;
+  const CustomSplash({required this.offstage, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Offstage(
-      offstage: showState,
+      offstage: offstage,
       child: Container(
         color: Colors.black,
       ),
