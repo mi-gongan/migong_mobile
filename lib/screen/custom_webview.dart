@@ -3,7 +3,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 class CustomWebView extends StatelessWidget {
   final baseUrl;
-  final WebViewCreatedCallback? onWebViewCreated;
+  WebViewCreatedCallback? onWebViewCreated;
 
   CustomWebView(
       {required this.onWebViewCreated, required this.baseUrl, super.key});

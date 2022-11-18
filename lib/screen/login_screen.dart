@@ -1,32 +1,28 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
-import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
-  WebViewController? webViewController;
-  CookieManager? cookieManager;
-  bool offstage;
-  final baseUrl;
+  final Completer<WebViewController>? webViewController;
+  final String baseUrl;
 
   LoginScreen(
-      {required this.webViewController,
-      required this.cookieManager,
-      required this.offstage,
-      required this.baseUrl,
-      super.key});
+      {required this.webViewController, required this.baseUrl, super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final storage = new FlutterSecureStorage();
   final db = FirebaseFirestore.instance;
+  final storage = new FlutterSecureStorage();
+  bool logined = false;
 
   @override
   initState() {
@@ -37,7 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Offstage(
-      offstage: widget.offstage,
+      offstage: logined,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -96,23 +92,37 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     try {
       User user = await UserApi.instance.me();
+      var userAccount = user.kakaoAccount;
+      print('login!');
 
       //firebase
-      var rnd = Random().nextInt(10000).toString();
+      var nonce = getRandomString(33);
       final data = {
-        "email": user.kakaoAccount?.email,
-        'image': user.kakaoAccount?.profile?.profileImageUrl,
-        'nickname': user.kakaoAccount?.profile?.nickname,
-        'state': 'login',
-        'nonce': rnd,
+        "email": userAccount?.email,
+        'image': userAccount?.profile?.profileImageUrl,
+        'nickname': userAccount?.profile?.nickname,
+        'state': 'request',
+        'nonce': nonce,
       };
       db
           .collection("users")
-          .doc(user.kakaoAccount?.email)
+          .doc(userAccount?.email)
           .set(data, SetOptions(merge: true));
+      print('set db!');
 
-      await widget.webViewController?.loadUrl(
-          widget.baseUrl + "/login/${user.kakaoAccount?.email}/${rnd}");
+      // web validate
+      widget.webViewController!.future.then((value) {
+        value.loadUrl(widget.baseUrl + "/login/${userAccount?.email}/${nonce}");
+      });
+      print("load url");
+
+      // wait
+      Future.delayed(Duration(milliseconds: 1000), () async {
+        await storage.write(key: 'email', value: userAccount?.email);
+        setState(() {
+          logined = true;
+        });
+      });
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
     }
@@ -129,3 +139,9 @@ class _LoginScreenState extends State<LoginScreen> {
     // );
   }
 }
+
+const _chars = 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz1234567890';
+Random _rnd = Random();
+
+String getRandomString(int length) => String.fromCharCodes(Iterable.generate(
+    length, (_) => _chars.codeUnitAt(_rnd.nextInt(_chars.length))));

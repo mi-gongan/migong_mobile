@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:migong/screen/custom_splash.dart';
 import 'package:migong/screen/custom_webview.dart';
@@ -14,9 +16,8 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  WebViewController? webViewController;
-  bool loginScreenOff = false;
-  final cookieManager = CookieManager();
+  final Completer<WebViewController> webViewController =
+      Completer<WebViewController>();
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +29,9 @@ class _AppState extends State<App> {
             children: <Widget>[
               CustomSplash(offstage: widget.splashOff),
               CustomWebView(
-                  onWebViewCreated: _webViewControllerManage,
-                  baseUrl: widget.baseUrl),
+                  onWebViewCreated: onWebViewCreated, baseUrl: widget.baseUrl),
               LoginScreen(
                   webViewController: webViewController,
-                  cookieManager: cookieManager,
-                  offstage: loginScreenOff,
                   baseUrl: widget.baseUrl),
             ],
           ),
@@ -42,7 +40,8 @@ class _AppState extends State<App> {
     );
   }
 
-  void _webViewControllerManage(WebViewController controller) {
-    this.webViewController = controller;
+  void onWebViewCreated(WebViewController controller) {
+    print(webViewController);
+    webViewController.complete(controller);
   }
 }
