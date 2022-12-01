@@ -111,8 +111,11 @@ class _LoginScreenState extends State<LoginScreen> {
       print('set db!');
 
       // web validate
-      widget.webViewController!.future.then((value) {
-        value.loadUrl(widget.baseUrl + "/login/${userAccount?.email}/${nonce}");
+      Future.delayed(Duration(milliseconds: 300), () async {
+        widget.webViewController!.future.then((value) {
+          value.loadUrl(
+              widget.baseUrl + "/login/${userAccount!.email}/${nonce}");
+        });
       });
       print("load url");
 
@@ -129,14 +132,24 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   void init() async {
-    // final docRef = db.collection("users").doc(email);
-    // docRef.get().then(
-    //   (DocumentSnapshot doc) {
-    //     final data = doc.data() as Map<String, dynamic>;
-    //     print(data);
-    //   },
-    //   onError: (e) => print("Error getting document: $e"),
-    // );
+    var email = await storage.read(key: "email");
+    print(email);
+    if (email != null) {
+      final docRef = db.collection("users").doc(email);
+      docRef.get().then(
+        (DocumentSnapshot doc) async {
+          final data = doc.data() as Map<String, dynamic>;
+          if (data["state"] == "logined") {
+            Future.delayed(Duration(milliseconds: 500), () async {
+              setState(() {
+                logined = true;
+              });
+            });
+          }
+        },
+        onError: (e) => print("Error getting document: $e"),
+      );
+    }
   }
 }
 

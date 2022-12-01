@@ -41,7 +41,6 @@ class _AppState extends State<App> {
   }
 
   void onWebViewCreated(WebViewController controller) {
-    print(webViewController);
     webViewController.complete(controller);
   }
 }
