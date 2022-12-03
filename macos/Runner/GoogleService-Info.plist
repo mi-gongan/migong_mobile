@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1063526528034-c5lg97rrt2r70jb0ji1rj2njvl537qlt.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1063526528034-c5lg97rrt2r70jb0ji1rj2njvl537qlt</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAo33E_FWS47qczWQl1A67vgQSyBbvCO9k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1063526528034</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.migong</string>
+	<key>PROJECT_ID</key>
+	<string>migong-42daa</string>
+	<key>STORAGE_BUCKET</key>
+	<string>migong-42daa.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1063526528034:ios:3859aecb402bb7cb61467b</string>
+</dict>
+</plist>

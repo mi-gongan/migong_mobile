@@ -29,6 +29,13 @@
             {
               "client_id": "1063526528034-tuv3m3sjtqi64i0cng937rlo5lqfncsn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "1063526528034-c5lg97rrt2r70jb0ji1rj2njvl537qlt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.migong"
+              }
             }
           ]
         }
