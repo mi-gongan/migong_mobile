@@ -11,9 +11,15 @@ import 'package:webview_flutter/webview_flutter.dart';
 class LoginScreen extends StatefulWidget {
   final Completer<WebViewController>? webViewController;
   final String baseUrl;
+  bool loginOff;
+  Function(bool) handleLoginOff;
 
   LoginScreen(
-      {required this.webViewController, required this.baseUrl, super.key});
+      {required this.webViewController,
+      required this.baseUrl,
+      required this.loginOff,
+      required this.handleLoginOff,
+      super.key});
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
@@ -22,7 +28,6 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final db = FirebaseFirestore.instance;
   final storage = new FlutterSecureStorage();
-  bool logined = false;
 
   @override
   initState() {
@@ -33,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Offstage(
-      offstage: logined,
+      offstage: widget.loginOff,
       child: SafeArea(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -111,7 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
       print('set db!');
 
       // web validate
-      Future.delayed(Duration(milliseconds: 300), () async {
+      Future.delayed(Duration(milliseconds: 2000), () async {
         widget.webViewController!.future.then((value) {
           value.loadUrl(
               widget.baseUrl + "/login/${userAccount!.email}/${nonce}");
@@ -120,11 +125,10 @@ class _LoginScreenState extends State<LoginScreen> {
       print("load url");
 
       // wait
-      Future.delayed(Duration(milliseconds: 1000), () async {
+      Future.delayed(Duration(milliseconds: 1500), () async {
         await storage.write(key: 'email', value: userAccount?.email);
-        setState(() {
-          logined = true;
-        });
+        print("storage keep");
+        widget.handleLoginOff(true);
       });
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
@@ -141,9 +145,7 @@ class _LoginScreenState extends State<LoginScreen> {
           final data = doc.data() as Map<String, dynamic>;
           if (data["state"] == "logined") {
             Future.delayed(Duration(milliseconds: 500), () async {
-              setState(() {
-                logined = true;
-              });
+              widget.handleLoginOff(true);
             });
           }
         },

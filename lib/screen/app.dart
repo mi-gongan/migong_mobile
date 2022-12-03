@@ -18,6 +18,7 @@ class App extends StatefulWidget {
 class _AppState extends State<App> {
   final Completer<WebViewController> webViewController =
       Completer<WebViewController>();
+  bool loginOff = false;
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +30,14 @@ class _AppState extends State<App> {
             children: <Widget>[
               CustomSplash(offstage: widget.splashOff),
               CustomWebView(
-                  onWebViewCreated: onWebViewCreated, baseUrl: widget.baseUrl),
+                  onWebViewCreated: onWebViewCreated,
+                  baseUrl: widget.baseUrl,
+                  handleLoginOff: handleLoginOff),
               LoginScreen(
                   webViewController: webViewController,
-                  baseUrl: widget.baseUrl),
+                  baseUrl: widget.baseUrl,
+                  loginOff: loginOff,
+                  handleLoginOff: handleLoginOff),
             ],
           ),
         ),
@@ -42,5 +47,13 @@ class _AppState extends State<App> {
 
   void onWebViewCreated(WebViewController controller) {
     webViewController.complete(controller);
+  }
+
+  void handleLoginOff(bool state) {
+    print(loginOff);
+    print(state);
+    setState(() {
+      loginOff = state;
+    });
   }
 }
