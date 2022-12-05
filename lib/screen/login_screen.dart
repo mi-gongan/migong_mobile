@@ -47,7 +47,17 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                ElevatedButton(onPressed: kakaoLogin, child: Text('userinfo')),
+                Container(
+                  height: 560,
+                ),
+                InkWell(
+                  onTap: kakaoLogin,
+                  child: Image(
+                    image: AssetImage("assets/img/kakao_login_large_wide.png"),
+                    height: 55.0,
+                    fit: BoxFit.fitHeight,
+                  ),
+                ),
               ],
             ),
           ),
@@ -116,19 +126,18 @@ class _LoginScreenState extends State<LoginScreen> {
       print('set db!');
 
       // web validate
-      Future.delayed(Duration(milliseconds: 2000), () async {
+      Future.delayed(Duration(seconds: 2), () async {
         widget.webViewController!.future.then((value) {
           value.loadUrl(
               widget.baseUrl + "/login/${userAccount!.email}/${nonce}");
         });
-      });
-      print("load url");
-
-      // wait
-      Future.delayed(Duration(milliseconds: 1500), () async {
-        await storage.write(key: 'email', value: userAccount?.email);
-        print("storage keep");
-        widget.handleLoginOff(true);
+        print("load url");
+        // wait
+        Future.delayed(Duration(seconds: 1), () async {
+          await storage.write(key: 'email', value: userAccount?.email);
+          print("storage keep");
+          widget.handleLoginOff(true);
+        });
       });
     } catch (error) {
       print('사용자 정보 요청 실패 $error');
@@ -143,7 +152,7 @@ class _LoginScreenState extends State<LoginScreen> {
       docRef.get().then(
         (DocumentSnapshot doc) async {
           final data = doc.data() as Map<String, dynamic>;
-          if (data["state"] == "logined") {
+          if (data["state"] != "logout") {
             Future.delayed(Duration(milliseconds: 500), () async {
               widget.handleLoginOff(true);
             });
