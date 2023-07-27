@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:migong/screen/camera_screen.dart';
 import 'package:migong/screen/app.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
-// ...
-
-void main() async {
+Future<void> main() async {
   await dotenv.load(fileName: "assets/config/.env");
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -22,8 +21,10 @@ void main() async {
   // await Future.delayed(Duration(seconds: 2));
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: App(),
-    initialRoute: '/',
-    routes: {},
+    initialRoute: '/camera',
+    routes: {
+      '/': (context) => App(),
+      '/camera': (context) => const CameraScreen(),
+    },
   ));
 }

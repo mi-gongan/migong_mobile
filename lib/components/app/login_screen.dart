@@ -6,6 +6,7 @@ import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:migong/components/common/go_to_route_button.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -52,12 +53,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 InkWell(
                   onTap: kakaoLogin,
-                  child: Image(
+                  child: const Image(
                     image: AssetImage("assets/img/kakao_login_large_wide.png"),
                     height: 55.0,
                     fit: BoxFit.fitHeight,
                   ),
                 ),
+                const GoToRouteButton(text: "camera", routeName: "/camera")
               ],
             ),
           ),
